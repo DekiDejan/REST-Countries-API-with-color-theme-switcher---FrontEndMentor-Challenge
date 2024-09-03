@@ -1,15 +1,33 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import moonRegularIcon from "./assets/moon-regular.svg";
 import moonSolidIcon from "./assets/moon-solid.svg";
 
 const Header = () => {
-  const [isDark, setIsDark] = useState(false);
+  const [isDark, setIsDark] = useState(() => {
+    const storedValue = localStorage.getItem("isThemeDark");
+    return storedValue !== null ? JSON.parse(storedValue) : false;
+  });
+
+  const documentClass = document.documentElement.classList;
+
+  useEffect(() => {
+    localStorage.setItem("isThemeDark", JSON.stringify(isDark));
+
+    if (localStorage.getItem("isThemeDark") === "true") {
+      documentClass.add("dark");
+    } else {
+      documentClass.remove("dark");
+    }
+  }, [isDark]);
 
   const handleThemeChange = () => {
-    const documentClass = document.documentElement.classList;
-
-    documentClass.toggle("dark");
-    documentClass.contains("dark") ? setIsDark(true) : setIsDark(false);
+    if (isDark && documentClass.contains("dark")) {
+      documentClass.remove("dark");
+      setIsDark(false);
+    } else {
+      documentClass.add("dark");
+      setIsDark(true);
+    }
   };
 
   return (
