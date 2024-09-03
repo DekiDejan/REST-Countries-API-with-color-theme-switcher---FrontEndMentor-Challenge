@@ -13,7 +13,7 @@ const Header = () => {
   };
 
   return (
-    <header className="flex justify-between items-center px-4 md:px-20 py-8 bg-white dark:bg-dark-blue shadow-md">
+    <header className="flex justify-between items-center px-4 md:px-20 py-8 bg-white dark:bg-dark-blue shadow-md sticky top-0">
       <div>
         <span className="font-extrabold md:text-xl">Where in the world?</span>
       </div>
