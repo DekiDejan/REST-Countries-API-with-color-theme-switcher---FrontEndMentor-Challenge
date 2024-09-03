@@ -1,20 +1,21 @@
+import { useState } from "react";
 import moonRegularIcon from "./assets/moon-regular.svg";
 import moonSolidIcon from "./assets/moon-solid.svg";
 
-type HeaderProps = {
-  isDark: boolean;
-  setIsDark: React.Dispatch<React.SetStateAction<boolean>>;
-};
+const Header = () => {
+  const [isDark, setIsDark] = useState(false);
 
-const Header = ({ isDark, setIsDark }: HeaderProps) => {
+  console.log(isDark);
+
   const handleThemeChange = () => {
-    setIsDark((prev) => !prev);
+    document.documentElement.classList.toggle("dark");
+    if (document.documentElement.classList.contains("dark")) {
+      setIsDark(true);
+    } else setIsDark(false);
   };
 
-  const themeIcon = isDark ? moonRegularIcon : moonSolidIcon;
-
   return (
-    <header className="flex justify-between items-center px-4 py-8 bg-white shadow-md">
+    <header className="flex justify-between items-center px-4 py-8 bg-white dark:bg-dark-blue shadow-md">
       <div>
         <span className="font-extrabold">Where in the world?</span>
       </div>
@@ -22,11 +23,11 @@ const Header = ({ isDark, setIsDark }: HeaderProps) => {
         <img
           width={16}
           height={16}
-          src={themeIcon}
+          src={isDark ? moonSolidIcon : moonRegularIcon}
           alt="Theme Icon"
           className=""
         />
-        <span>{isDark ? "Dark" : "Light"} Mode</span>
+        <span>{isDark ? "Light" : "Dark"} Mode</span>
       </div>
     </header>
   );
