@@ -21,7 +21,7 @@ const Header = () => {
         <img
           width={14}
           height={14}
-          src={isDark ? moonRegularIcon : moonSolidIcon}
+          src={isDark ? moonSolidIcon : moonRegularIcon}
           alt="Theme Icon"
           className=""
         />
