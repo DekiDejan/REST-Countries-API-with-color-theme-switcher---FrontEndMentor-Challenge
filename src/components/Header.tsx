@@ -31,11 +31,14 @@ const Header = () => {
   };
 
   return (
-    <header className="flex justify-between items-center px-4 md:px-20 py-8 bg-white dark:bg-dark-blue shadow-md sticky top-0">
+    <header className="flex justify-between items-center px-4 md:px-20 py-6 bg-white dark:bg-dark-blue shadow-md sticky top-0">
       <div>
         <span className="font-extrabold md:text-xl">Where in the world?</span>
       </div>
-      <div onClick={handleThemeChange} className="flex gap-2 cursor-pointer">
+      <div
+        onClick={handleThemeChange}
+        className="flex gap-2 cursor-pointer bg-very-light-gray-bg-light dark:bg-very-dark-blue-bg-dark px-4 py-2 rounded-full shadow-md"
+      >
         <img
           width={14}
           height={14}
