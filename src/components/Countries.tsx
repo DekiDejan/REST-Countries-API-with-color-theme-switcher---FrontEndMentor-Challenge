@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import Country from "./Country";
+import { Link } from "react-router-dom";
 
 const Countries = () => {
   const [countries, setCountries] = useState<[]>([]);
@@ -82,7 +83,12 @@ const Countries = () => {
       <div className="flex flex-wrap gap-12 justify-center">
         {filteredCountries.map(
           (country: any): JSX.Element => (
-            <Country country={country} key={country.name.common} />
+            <Link
+              to={`/REST-Countries-API-with-color-theme-switcher---FrontEndMentor-Challenge/country/${country.name.common}`}
+              key={country.name.common}
+            >
+              <Country country={country} />
+            </Link>
           )
         )}
       </div>
