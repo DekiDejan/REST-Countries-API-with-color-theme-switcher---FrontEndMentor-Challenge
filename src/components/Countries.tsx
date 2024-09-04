@@ -8,7 +8,7 @@ const Countries = () => {
 
   const [searchInput, setSearchInput] = useState<string>("");
   const [selectedContinent, setSelectedContinent] =
-    useState<string>("Filter by Region");
+    useState<string>("All Continents");
 
   useEffect(() => {
     const fetchCountries = async () => {
@@ -39,7 +39,7 @@ const Countries = () => {
     );
 
   const continents = [
-    "Filter by Region",
+    "All Continents",
     ...new Set(countries.map((country: any) => country.region)),
   ];
 
@@ -48,7 +48,7 @@ const Countries = () => {
       .toLowerCase()
       .includes(searchInput.toLowerCase());
     const matchesSelectedContinent =
-      selectedContinent === "Filter by Region" ||
+      selectedContinent === "All Continents" ||
       country.region === selectedContinent;
 
     return matchesSearchInput && matchesSelectedContinent;
