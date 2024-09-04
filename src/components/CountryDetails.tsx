@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 const CountryDetails = () => {
   const { countryId } = useParams();
@@ -35,7 +35,7 @@ const CountryDetails = () => {
     return <p>Error: {error}</p>;
   }
 
-  const country = countries.find(
+  const country: any = countries.find(
     (c: any) => c.name.common.toString() === countryId
   );
 
@@ -46,8 +46,77 @@ const CountryDetails = () => {
   }
 
   return (
-    <div>
-      <h1>{countryId}</h1>
+    <div className="mx-4 md:mx-20 my-8">
+      <Link
+        to={
+          "/REST-Countries-API-with-color-theme-switcher---FrontEndMentor-Challenge"
+        }
+      >
+        <span className="px-8 py-2 shadow-md">Back</span>
+      </Link>
+      <div className="mt-8 flex flex-col md:flex-row justify-center items-center gap-x-20">
+        <div>
+          <img
+            src={country.flags.png}
+            alt={`${country.name.common} flag`}
+            className="w-96"
+          />
+        </div>
+        <div className="text-sm leading-8">
+          <h1 className="mt-8 mb-4 text-lg font-bold">{country.name.common}</h1>
+          <div className="flex flex-col lg:flex-row gap-8">
+            <div>
+              <p>
+                <span className="font-bold text-sm">Native Name: </span>
+                {country.region}
+              </p>
+              <p>
+                <span className="font-bold text-sm">Population: </span>
+                {new Intl.NumberFormat("en-US").format(country.population)}
+              </p>
+              <p>
+                <span className="font-bold text-sm">Region: </span>
+                {country.region}
+              </p>
+              <p>
+                <span className="font-bold text-sm">Sub Region: </span>
+                {country.subregion}
+              </p>
+              <p>
+                <span className="font-bold text-sm">Capital: </span>
+                {country.capital}
+              </p>
+            </div>
+            <div>
+              <p>
+                <span className="font-bold text-sm">Top Level Domain: </span>
+                {country.tld}
+              </p>
+              <p>
+                <span className="font-bold text-sm">Currencies: </span>
+                {country.region}
+              </p>
+              <p>
+                <span className="font-bold text-sm">Languages: </span>
+                {country.region}
+              </p>
+            </div>
+          </div>
+          <div className="mt-8">
+            <p className="text-base font-bold">Border Countries:</p>
+            <div className="flex flex-wrap gap-2">
+              {country.borders?.map((borderCountry: any) => (
+                <div
+                  key={borderCountry}
+                  className="text-sm shadow-md px-4 py-2"
+                >
+                  {borderCountry}
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
