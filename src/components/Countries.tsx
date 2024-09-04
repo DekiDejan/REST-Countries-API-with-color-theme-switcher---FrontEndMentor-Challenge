@@ -2,21 +2,23 @@ import { useEffect, useState } from "react";
 import Country from "./Country";
 
 const Countries = () => {
-  const [data, setData] = useState<[]>([]);
+  const [countries, setCountries] = useState<[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string>("");
 
   const [searchInput, setSearchInput] = useState<string>("");
+  const [selectedContinent, setSelectedContinent] =
+    useState<string>("Filter by Region");
 
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchCountries = async () => {
       try {
         const response = await fetch("https://restcountries.com/v3.1/all");
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
         }
         const result = await response.json();
-        setData(result);
+        setCountries(result);
       } catch (err: any) {
         setError(err.message);
       } finally {
@@ -24,7 +26,7 @@ const Countries = () => {
       }
     };
 
-    fetchData();
+    fetchCountries();
   }, []);
 
   if (loading)
@@ -36,24 +38,51 @@ const Countries = () => {
       <div className="text-center mt-40 font-bold text-xl">Error: {error}</div>
     );
 
-  const filteredItems = data.filter((item: any) =>
-    item.name.common.toLowerCase().includes(searchInput.toLowerCase())
-  );
+  const continents = [
+    "Filter by Region",
+    ...new Set(countries.map((country: any) => country.region)),
+  ];
+
+  const filteredCountries = countries.filter((country: any) => {
+    const matchesSearchInput = country.name.common
+      .toLowerCase()
+      .includes(searchInput.toLowerCase());
+    const matchesSelectedContinent =
+      selectedContinent === "Filter by Region" ||
+      country.region === selectedContinent;
+
+    return matchesSearchInput && matchesSelectedContinent;
+  });
 
   return (
     <section className="m-6">
-      <div className="w-80 mx-auto my-4 px-8 py-4 bg-white dark:bg-dark-blue shadow-md rounded-lg">
-        <input
-          className="w-full dark:bg-dark-blue focus:outline-none"
-          placeholder="Search for a country..."
-          value={searchInput}
-          onChange={(e) => setSearchInput(e.target.value)}
-        />
+      <div className="w-full my-6 flex flex-col justify-between md:flex-row gap-4">
+        <div className="w-80 max-w-96 mx-auto md:mx-4 px-8 py-4 bg-white dark:bg-dark-blue shadow-md rounded-lg flex grow">
+          <input
+            className="w-full dark:bg-dark-blue focus:outline-none"
+            placeholder="Search for a country..."
+            value={searchInput}
+            onChange={(e) => setSearchInput(e.target.value)}
+          />
+        </div>
+        <div className="w-80 max-w-96 mx-auto md:mx-4 px-8 py-4 bg-white dark:bg-dark-blue shadow-md rounded-lg flex grow">
+          <select
+            className="w-full  dark:bg-dark-blue focus:outline-none text-slate-400"
+            value={selectedContinent}
+            onChange={(e) => setSelectedContinent(e.target.value)}
+          >
+            {continents.map((continent, index) => (
+              <option key={index} value={continent}>
+                {continent}
+              </option>
+            ))}
+          </select>
+        </div>
       </div>
       <div className="flex flex-wrap gap-12 justify-center">
-        {filteredItems.map(
-          (item: any): JSX.Element => (
-            <Country item={item} key={item.name.common} />
+        {filteredCountries.map(
+          (country: any): JSX.Element => (
+            <Country country={country} key={country.name.common} />
           )
         )}
       </div>
