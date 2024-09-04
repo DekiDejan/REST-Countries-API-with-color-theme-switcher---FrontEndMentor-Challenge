@@ -1,9 +1,12 @@
 import { useEffect, useState } from "react";
+import Country from "./Country";
 
 const Countries = () => {
-  const [data, setData] = useState<null | []>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [data, setData] = useState<[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string>("");
+
+  const [searchInput, setSearchInput] = useState<string>("");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -33,42 +36,26 @@ const Countries = () => {
       <div className="text-center mt-40 font-bold text-xl">Error: {error}</div>
     );
 
+  const filteredItems = data.filter((item: any) =>
+    item.name.common.toLowerCase().includes(searchInput.toLowerCase())
+  );
+
   return (
     <section className="m-6">
+      <div className="w-80 mx-auto my-4 px-8 py-4 bg-white dark:bg-dark-blue shadow-md rounded-lg">
+        <input
+          className="w-full dark:bg-dark-blue focus:outline-none"
+          placeholder="Search for a country..."
+          value={searchInput}
+          onChange={(e) => setSearchInput(e.target.value)}
+        />
+      </div>
       <div className="flex flex-wrap gap-12 justify-center">
-        {data?.map((item: any) => (
-          <div
-            key={item.name.common}
-            className="bg-white dark:bg-dark-blue shadow-md w-80 h-96 rounded-lg overflow-hidden cursor-pointer"
-          >
-            <div className="w-80 h-48">
-              <img
-                src={item.flags.png}
-                alt={`${item.name.common} flag`}
-                className="w-full h-full object-cover aspect-[2/1]"
-              />
-            </div>
-            <div className="mx-4 my-6">
-              <p className="font-bold mb-4">
-                {item.name.common === "North Macedonia"
-                  ? "Republic of Macedonia"
-                  : item.name.common}
-              </p>
-              <p>
-                <span className="font-bold text-sm">Population: </span>
-                {new Intl.NumberFormat("en-US").format(item.population)}
-              </p>
-              <p>
-                <span className="font-bold text-sm">Region: </span>
-                {item.region}
-              </p>
-              <p>
-                <span className="font-bold text-sm">Capital: </span>
-                {item.capital}
-              </p>
-            </div>
-          </div>
-        ))}
+        {filteredItems.map(
+          (item: any): JSX.Element => (
+            <Country item={item} key={item.name.common} />
+          )
+        )}
       </div>
     </section>
   );
