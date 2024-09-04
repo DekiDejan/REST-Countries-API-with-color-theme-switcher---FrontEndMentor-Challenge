@@ -37,7 +37,7 @@ const Header = () => {
       </div>
       <div
         onClick={handleThemeChange}
-        className="flex gap-2 cursor-pointer bg-very-light-gray-bg-light dark:bg-very-dark-blue-bg-dark px-4 py-2 rounded-full shadow-md"
+        className="flex gap-2 cursor-pointer px-4 py-2 rounded-full shadow-md hover:bg-very-light-gray-bg-light dark:hover:bg-very-dark-blue-bg-dark"
       >
         <img
           width={14}
