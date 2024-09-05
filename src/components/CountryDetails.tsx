@@ -28,11 +28,13 @@ const CountryDetails = () => {
   }, []);
 
   if (loading) {
-    return <p>Loading...</p>;
+    return <p className="text-center mt-40 font-bold text-xl">Loading...</p>;
   }
 
   if (error) {
-    return <p>Error: {error}</p>;
+    return (
+      <p className="text-center mt-40 font-bold text-xl">Error: {error}</p>
+    );
   }
 
   const country: any = countries.find(
@@ -40,10 +42,13 @@ const CountryDetails = () => {
   );
 
   console.log(country); /////////////////////////////////////////////////////////////////
+  console.log(typeof country.borders); /////////////////////////////////////////////////////////////////
 
   if (!country) {
     return <div>Country not found</div>;
   }
+
+  // const countryBorders = country.borders.length
 
   return (
     <div className="mx-4 md:mx-20 my-8">
@@ -63,12 +68,20 @@ const CountryDetails = () => {
           />
         </div>
         <div className="text-sm leading-8">
-          <h1 className="mt-8 mb-4 text-lg font-bold">{country.name.common}</h1>
+          <h1 className="mt-8 mb-4 text-lg font-bold">
+            {country.name.common === "North Macedonia"
+              ? "Republic of Macedonia"
+              : country.name.common}
+          </h1>
           <div className="flex flex-col lg:flex-row gap-8">
             <div>
               <p>
                 <span className="font-bold text-sm">Native Name: </span>
-                {country.region}
+                {
+                  country.name.nativeName[
+                    Object.keys(country.name.nativeName)[0]
+                  ].common
+                }
               </p>
               <p>
                 <span className="font-bold text-sm">Population: </span>
@@ -94,25 +107,29 @@ const CountryDetails = () => {
               </p>
               <p>
                 <span className="font-bold text-sm">Currencies: </span>
-                {country.region}
+                {country.currencies[Object.keys(country.currencies)[0]].name}
               </p>
               <p>
                 <span className="font-bold text-sm">Languages: </span>
-                {country.region}
+                {Object.values(country.languages).join(", ")}
               </p>
             </div>
           </div>
           <div className="mt-8">
             <p className="text-base font-bold">Border Countries:</p>
             <div className="flex flex-wrap gap-2">
-              {country.borders?.map((borderCountry: any) => (
-                <div
-                  key={borderCountry}
-                  className="text-sm shadow-md px-4 py-2"
-                >
-                  {borderCountry}
-                </div>
-              ))}
+              {country.borders ? (
+                country.borders.map((borderCountry: any) => (
+                  <div
+                    key={borderCountry}
+                    className="text-sm shadow-md px-4 py-2"
+                  >
+                    {borderCountry}
+                  </div>
+                ))
+              ) : (
+                <div>This country doesn't have any neighbors.</div>
+              )}
             </div>
           </div>
         </div>
